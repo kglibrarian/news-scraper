@@ -1,20 +1,38 @@
-var express = require("express");
+// *********************************************************************************
+// news-controller.js - this file offers a set of routes 
+// *********************************************************************************
 
-var router = express.Router();
-
-// Import the model (cat.js) to use its database functions.
-var Articles = require("../models/Articles.js");
-var index = require("../models/index.js");
-var Notes = require("../models/Notes.js");
-
+// Dependencies
+// =============================================================
 // It works on the client and on the server
 var axios = require("axios");
 var cheerio = require("cheerio");
 
+// var express = require("express");
+//Express is "app" being passed into the function. 
+
+// Import the model (articles.js, index.js, notes.js) to use its database functions.
+// var Articles = require("../models/Articles.js");
+// var index = require("../models/index.js");
+// var Notes = require("../models/Notes.js");
+
+
+// Require all models
+var db = require("../models");
+
+// Routes
+// =============================================================
+module.exports = function(app) {
+
+
+
 // Create all our routes and set up logic within those routes where required.
+app.get("/", function(req, res) {
+  res.render("index");
+});
 
 // A GET route for scraping the echoJS website
-router.get("/scrape", function(req, res) {
+app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with request
     axios.get("http://www.echojs.com/").then(function(response) {
       // Then, we load that into cheerio and save it to $ for a shorthand selector
@@ -51,7 +69,7 @@ router.get("/scrape", function(req, res) {
   });
   
   // Route for getting all Articles from the db
- router.get("/articles", function(req, res) {
+ app.get("/articles", function(req, res) {
     // TODO: Finish the route so it grabs all of the articles
     db.Article.find({})
     .then(function(dbarticle){
@@ -60,7 +78,7 @@ router.get("/scrape", function(req, res) {
   });
   
   // Route for grabbing a specific Article by id, populate it with it's note
- router.get("/articles/:id", function(req, res) {
+ app.get("/articles/:id", function(req, res) {
     // TODO
     // ====
     // Finish the route so it finds one article using the req.params.id,
@@ -86,7 +104,7 @@ router.get("/scrape", function(req, res) {
   
   
   // Route for saving/updating an Article's associated Note
- router.post("/articles/:id", function(req, res) {
+app.post("/articles/:id", function(req, res) {
     // TODO
     // ====
     // save the new note that gets posted to the Notes collection
@@ -111,6 +129,6 @@ router.get("/scrape", function(req, res) {
   
   });
 
-
+};
 // Export routes for server.js to use.
-module.exports = router;
+// module.exports = router;

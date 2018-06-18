@@ -1,3 +1,5 @@
+module.exports = function(app) {
+
 // Set up Mongoose connection.
 var mongoose = require("mongoose");
 
@@ -13,6 +15,6 @@ var db = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-
+};
 // Export connection for our ORM to use.
-module.exports = connection;
+// module.exports = connection;
