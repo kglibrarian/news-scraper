@@ -25,5 +25,9 @@
     "express-handlebars": "^3.0.0",
     "mongoose": "^5.1.5",
     "morgan": "^1.9.0"
+  }, 
+  "scripts": {
+    "start": "node server.js"
   }
+ 
 }
