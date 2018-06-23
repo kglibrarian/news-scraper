@@ -50,6 +50,9 @@ app.get("/scrape", function(req, res) {
         result.link = $(this)
           .children("a")
           .attr("href");
+     
+
+        
   
         // Create a new Article using the `result` object built from scraping
         db.Article.create(result)
@@ -99,8 +102,7 @@ app.get("/scrape", function(req, res) {
     // then responds with the article with the note included
   });
   
-  
-  
+   
   
   
   // Route for saving/updating an Article's associated Note
@@ -129,6 +131,36 @@ app.post("/articles/:id", function(req, res) {
   
   });
 
+
+
+app.put("/articles/:id", function(req, res) {
+  db.Article.findOneAndUpdate({ _id: req.params.id }, {saved: true})
+  .then(function(saved) {
+    // If the User was updated successfully, send it back to the client
+    res.json(saved);
+  })
+});
+
+
+app.get("/articles/saved", function(req, res) {
+  // TODO: Finish the route so it grabs all of the articles that are saved (i.e.true)
+  db.Article.find({save: true})
+  .then(function(dbsaved){
+    res.json(dbsaved)
+  }) 
+
+app.get("/saved", function(req, res) {
+  res.render("saved");
+})
+ 
+});
+
+
+
+
 };
+
+
+
 // Export routes for server.js to use.
 // module.exports = router;

@@ -1,15 +1,31 @@
+$(document).ready(function() {
+
+
 // Grab the articles as a json
 $.getJSON("/articles", function(data) {
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
-      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+      //("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+      //("#articles").append("<div class='card' style='width:18rem;'"+"<div class ='card-body'>" + "<p class='card-title' data-id='" + data[i]._id + "'>" + data[i].title + "</p>" + "<p class='card-text'>" + data[i].link + "</p>" +"</div>"+ "</div>");
+      //target="_blank">' + data[i].title + "</a></p><p>" + data[i].venue + "</p>");
+      $("#articles").append(
+        `<div class="card" data-id="${data[i]._id}" style="width: 40rem;">
+          <div class="card-body">
+          <p class="card-title"> ${data[i].title} </p>
+            <p class="card-text">
+              <a href="${data[i].link}/"target="_blank">${data[i].link}</a>
+            </p>
+            <a href="#" class="btn btn-primary" id = "saved" data-id="${data[i]._id}">Save</a>
+          </div>
+        </div>`
+      );
     }
   });
-  
-  
-  // Whenever someone clicks a p tag
-  $(document).on("click", "p", function() {
+
+   
+ // Whenever someone clicks a card title tag
+  $(document).on("click", ".card", function() {
     // Empty the notes from the note section
     $("#notes").empty();
     // Save the id from the p tag
@@ -70,4 +86,44 @@ $.getJSON("/articles", function(data) {
     $("#titleinput").val("");
     $("#bodyinput").val("");
   });
-  
+
+
+  // When you click the saved button
+  $(document).on("click", "#saved", function() {
+    // Grab the id associated with the article from the submit button
+    var thisId = $(this).attr("data-id");
+
+  $.ajax({
+    method: "PUT",
+    url: "/articles/" + thisId,
+    data: {
+      saved: true
+    }
+  })
+    // With that done
+    .then(function(data) {
+      // Log the response
+      console.log(data);
+      
+      
+    });
+  });
+
+  $(document).on("click", "#saved-list", function(){
+
+    $.ajax({
+      method: "GET",
+      url: "/articles/saved",
+     
+    })
+      // With that done
+      .then(function(data) {
+        // Log the response
+        console.log(data);
+        res.json(data);
+        $("#my-saved-articles").append("<p>'test'</p>")
+      });
+  })
+
+
+})
