@@ -149,14 +149,14 @@ app.get("/articles/saved", function(req, res) {
     res.json(dbsaved)
   }) 
 
-app.get("/saved", function(req, res) {
-  res.render("saved");
-})
+
  
 });
 
 
-
+app.get("/saved", function(req, res) {
+  res.render("saved");
+})
 
 };
 

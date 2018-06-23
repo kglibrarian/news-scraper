@@ -110,7 +110,7 @@ $.getJSON("/articles", function(data) {
   });
 
   $(document).on("click", "#saved-list", function(){
-
+    console.log("test");
     $.ajax({
       method: "GET",
       url: "/articles/saved",
