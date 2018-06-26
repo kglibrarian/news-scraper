@@ -23,7 +23,38 @@ $.getJSON("/articles", function(data) {
     }
   });
 
+  function getSaved () {
+  $.getJSON("/articles", function(data) {
    
+    var saved = data.filter(key => {
+      return key.saved === true;
+      })
+      console.log(saved)
+    // For each one
+    for (var i = 0; i < saved.length; i++) {
+      // Display the apropos information on the page
+      
+      $("#articles").append(
+        `<div class="card" data-id="${saved[i]._id}" style="width: 40rem;">
+          <div class="card-body">
+          <p class="card-title"> ${saved[i].title} </p>
+            <p class="card-text">
+              <a href="${saved[i].link}/"target="_blank">${saved[i].link}</a>
+            </p>
+            <a href="#" class="btn btn-primary" id = "saved" data-id="${saved[i]._id}">Save</a>
+          </div>
+        </div>`
+      );
+    }
+  });
+};
+  
+$(document).on('click', '#saved-list', function(req, res) {
+  event.preventDefault();
+  $("#articles").empty();
+  getSaved();
+  });
+
  // Whenever someone clicks a card title tag
   $(document).on("click", ".card", function() {
     // Empty the notes from the note section
@@ -111,19 +142,12 @@ $.getJSON("/articles", function(data) {
 
   $(document).on("click", "#saved-list", function(){
     console.log("test");
-    $.ajax({
-      method: "GET",
-      url: "/articles/saved",
-     
-    })
-      // With that done
-      .then(function(data) {
-        // Log the response
-        console.log(data);
-        res.json(data);
-        $("#my-saved-articles").append("<p>'test'</p>")
-      });
+    $("#articles").empty();
+    getSaved();
   })
+
+
+
 
 
 })

@@ -134,30 +134,23 @@ app.post("/articles/:id", function(req, res) {
 
 
 app.put("/articles/:id", function(req, res) {
-  db.Article.findOneAndUpdate({ _id: req.params.id }, {saved: true})
-  .then(function(saved) {
-    // If the User was updated successfully, send it back to the client
-    res.json(saved);
-  })
-});
+    db.Article.findOneAndUpdate({ _id: req.params.id }, {saved: true})
+    .then(function(saved) {
+      // If the User was updated successfully, send it back to the client
+      res.json(saved);
+    })
+  });
 
 
 app.get("/articles/saved", function(req, res) {
   // TODO: Finish the route so it grabs all of the articles that are saved (i.e.true)
-  db.Article.find({save: true})
-  .then(function(dbsaved){
-    res.json(dbsaved)
-  }) 
-
-
- 
+  db.Article.find({})
+    .then(function(dbarticle){
+      res.json(dbarticle)
+    })
 });
 
-
-app.get("/saved", function(req, res) {
-  res.render("saved");
-})
-
+  
 };
 
 
